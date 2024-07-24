@@ -25,7 +25,7 @@ def buscar_lojas_google_maps(cidade, query):
     
     # Configuração inicial do WebDriver
     chrome_options = Options()
-    driver_path = '/path/to/chromedriver'  # Atualize com o caminho para o seu ChromeDriver
+    driver_path = r'.\LocalizeMap\driver\chromedriver-win64\chromedriver.exe'  # caminho para o chromedrive
     
     lojas = []
     for proxy in proxies:
