@@ -1,0 +1,522 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.coverage.*
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+docs/_build/doctrees
+docs/_build/html
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+
+# Pylint
+pylint/epylint
+
+# PyCharm
+.idea/
+*.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+.idea/httpRequests
+.idea/shelf
+.idea/workspace.xml
+.idea/codeStyles
+.idea/dataSources
+.idea/dataSources.local
+.idea/dataSources.xml
+.idea/dataSources.remote.xml
+.idea/sqlDataSources.xml
+.idea/datasources.xml
+.idea/sqlDataSources.remote.xml
+.idea/sqlDialects.xml
+.idea/spring.xml
+.idea/microservices.xml
+.idea/maven.xml
+.idea/modules.xml
+.idea/artifacts
+.idea/assetWizard.xml
+.idea/batchfilesSupport.xml
+.idea/caches.xml
+.idea/cachesPlugin.xml
+.idea/fileTemplates
+.idea/gradle.xml
+.idea/jarRepositories.xml
+.idea/libraries
+.idea/runConfigurations
+.idea/scopes
+.idea/tasks.xml
+.idea/tasks
+.idea/workspace.xml
+.idea/.idea-writer.xml
+.idea/.idea-fsa.xml
+.idea/languages.xml
+.idea/inspections
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/spring.xml
+.idea/tasks.xml
+.idea/workspace.xml
+.idea/yaml.sql
+.idea/dart_tool
+.idea/inspectionProfiles
+.idea/codeStyles
+.idea/bower_components
+.idea/markdown-navigator.xml
+.idea/markdown-navigator.xml__
+.idea/deployment.xml
+.idea/deployment.xml__
+.idea/ide_general.xml
+.idea/jsLibraryMappings.xml__
+.idea/markdown-navigator.xml__
+.idea/php.xml
+.idea/shelf
+.idea/sonarIssues.xml
+.idea/sqlDataSources.xml
+.idea/sqlDialects.xml
+.idea/tasks.xml
+.idea/tasks.xml__
+.idea/templateLanguages.xml
+.idea/uidesigner.xml
+.idea/workspace.xml
+.idea/assets.json
+.idea/assets.json__
+.idea/databaseDrivers.xml
+.idea/fileTemplates
+.idea/gradle.xml
+.idea/jarRepositories.xml
+.idea/libraries
+.idea/runConfigurations
+.idea/scopes
+.idea/tasks.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/sonarIssues.xml
+.idea/markdown-navigator.xml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Vim
+[v,V]im[T,t]ags
+*.swp
+.swp
+.swo
+
+# PyDev
+.project
+.pydevproject
+
+# JupyterLab
+.jupyter/lab/workspaces/
+
+# VS Code
+.vscode/
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/tasks.json
+.vscode/cspell.json
+.vscode/cspell.cache
+.vscode-oss/
+.vscode-test/
+.vscode-insiders/
+.history
+__pycache__
+*.code-search
+.vscode-root/
+.vscode-root/tasks.json
+
+# IntelliJ IDEA
+.idea/
+*.iws
+.idea
+.idea/.idea/
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/libraries/
+.idea/libraries
+.idea/libraries/
+.idea/httpRequests
+.idea/shelf
+.idea/workspace.xml
+.idea/modules.xml
+.idea/libraries
+
+# Rider
+.idea/
+.idea/dataSources.xml
+.idea/inspections
+.idea/jsLibraryMappings.xml
+.idea/libraries
+.idea/modules.xml
+.idea/runConfigurations.xml
+.idea/tasks.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/shelf
+.idea/codeStyles
+.idea/scopes
+.idea/tasks.xml
+.idea/spring.xml
+.idea/yaml.sql
+.idea/artifacts
+.idea/assetWizard.xml
+.idea/batchfilesSupport.xml
+.idea/caches.xml
+.idea/cachesPlugin.xml
+.idea/deployment.xml
+.idea/deployment.xml__
+.idea/fileTemplates
+.idea/gradle.xml
+.idea/jarRepositories.xml
+.idea/jsLibraryMappings.xml
+.idea/jsLibraryMappings.xml__
+.idea/libraries
+.idea/markdown-navigator.xml
+.idea/markdown-navigator.xml__
+.idea/modules.xml
+.idea/markdown-navigator.xml
+.idea/markdown-navigator.xml__
+.idea/sonarIssues.xml
+.idea/sqlDataSources.xml
+.idea/sqlDataSources.remote.xml
+.idea/sqlDialects.xml
+.idea/sqlDataSources.xml
+.idea/sqlDialects.xml
+.idea/yaml.sql
+.idea/uidesigner.xml
+.idea/workspace.xml
+.idea/workspace.xml__
+.idea/markdown-navigator.xml
+.idea/misc.xml
+.idea/php.xml
+.idea/shelf
+.idea/sonarIssues.xml
+.idea/sqlDataSources.xml
+.idea/sqlDialects.xml
+.idea/tasks.xml
+.idea/workspace.xml
+.idea/tasks.xml__
+.idea/templateLanguages.xml
+.idea/workspace.xml
+.idea/databaseDrivers.xml
+.idea/inspections
+.idea/deployment.xml
+.idea/deployment.xml__
+.idea/fileTemplates
+.idea/gradle.xml
+.idea/jarRepositories.xml
+.idea/libraries
+.idea/runConfigurations
+.idea/scopes
+.idea/tasks.xml
+.idea/tasks
+.idea/workspace.xml
+.idea/assets.json
+.idea/assets.json__
+.idea/deployment.xml
+.idea/deployment.xml__
+.idea/deployment.xml__
+.idea/markdown-navigator.xml
+.idea/markdown-navigator.xml__
+.idea/markdown-navigator.xml__
+
+# C++ specific
+a.out
+*.o
+*.obj
+*.so
+*.so.*
+*.dylib
+*.dll
+*.lib
+*.a
+*.la
+*.lo
+
+# Rust specific
+target/
+
+# D specific
+*.lst
+
+# Certificates
+*.pem
+*.crt
+*.key
+
+# CI
+ci/
+
+# Unused assets
+assets/unused
+
+# NetBeans
+nbproject/
+build/
+
+# WebStorm
+.idea/
+.idea/.idea/
+.idea/workspace.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/sonarIssues.xml
+.idea/markdown-navigator.xml
+.idea/markdown-navigator.xml__
+
+# Eclipse
+.metadata
+.classpath
+.project
+.settings/
+
+# Gradle
+.gradle/
+build/
+
+# Log files
+*.log
+
+# NPM
+node_modules/
+package-lock.json
+
+# Yarn
+.yarn/
+.pnp.*
+.yarn-cache/
+
+# Pipenv
+Pipfile.lock
+
+# Compiled Java classes
+*.class
+
+# Maven
+target/
+
+# Azure Functions artifacts
+bin/
+
+# Boot files
+.mvn/wrapper/maven-wrapper.jar
+!/.mvn/wrapper/maven-wrapper.properties
+!/.mvn/wrapper/MavenWrapperDownloader.java
+
+# OSX
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Intellij
+.idea/
+.idea/.idea/
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/sonarIssues.xml
+.idea/markdown-navigator.xml
+.idea/markdown-navigator.xml__
+
+# JBoss
+.data
+
+# Microsoft Office temporary files
+~$*
+
+# Thumbnail cache files
+*[T,t]humbs.db
+
+# Cygwin
+.cygwin
+
+# Midnight Commander
+.mc/
+
+# JetBrains
+.idea/
+.idea/.idea/
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/sonarIssues.xml
+.idea/markdown-navigator.xml
+.idea/markdown-navigator.xml__
+
+# Microsoft Azure tools
+.azure/
+
+# Microsoft Office
+~$*
+
+# MATLAB
+*.asv
+
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Bazel
+bazel-*
+
+# Windows installer
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Google Cloud SDK
+.local/google-cloud-sdk/
+
+# VSCode
+.vscode/
+
+# Vagrant
+.vagrant/
+
+# Kubernetes
+kube-*
+
+# TernJS
+.tern-port
+
+# Istio
+*.istio
+
+# Brotli
+*.br
+
+# CRX
+*.crx
+
+# RStudio
+.Rproj.user/
+
