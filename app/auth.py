@@ -1,13 +1,71 @@
+import hashlib
+import json
 import os
 import hmac
 import hashlib
 import base64
-import json
-import smtplib
 from datetime import datetime
 
+# Função para criptografar a senha
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
-# Função para gerar um token seguro
+# Função para verificar as credenciais do usuário
+def check_credentials(username, password):
+    hashed_password = hash_password(password)
+    try:
+        with open('data/data/users.json', 'r') as f:
+            users = json.load(f)
+            return users.get(username, {}).get("password") == hashed_password
+    except FileNotFoundError:
+        return False
+
+# Função para registrar um novo usuário
+def register_user(username, password, email):
+    hashed_password = hash_password(password)
+    try:
+        with open('data/data/users.json', 'r') as f:
+            users = json.load(f)
+    except FileNotFoundError:
+        users = {}
+
+    if username in users:
+        return False  # Usuário já existe
+
+    users[username] = {
+        "password": hashed_password,
+        "email": email
+    }
+    with open('data/data/users.json', 'w') as f:
+        json.dump(users, f, indent=4)
+    return True
+
+# Função para redefinir a senha
+def reset_password(username, new_password, _):
+    hashed_new_password = hash_password(new_password)
+    try:
+        with open('data/data/users.json', 'r') as f:
+            users = json.load(f)
+        if username in users:
+            users[username]["password"] = hashed_new_password
+            with open('data/data/users.json', 'w') as f:
+                json.dump(users, f, indent=4)
+            return True
+        else:
+            return False
+    except FileNotFoundError:
+        return False
+
+# Função para obter o papel do usuário
+def get_user_role(username):
+    try:
+        with open('data/data/users.json', 'r') as f:
+            users = json.load(f)
+        return users.get(username, {}).get("role", "user")
+    except FileNotFoundError:
+        return "user"
+
+# Função para gerar um token de redefinição de senha
 def generate_reset_token(username):
     secret_key = os.urandom(16)
     timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -16,8 +74,7 @@ def generate_reset_token(username):
     token_b64 = base64.urlsafe_b64encode(token).decode()
     return token_b64, secret_key
 
-
-# Função para verificar o token seguro
+# Função para verificar o token de redefinição de senha
 def verify_reset_token(token, username, secret_key):
     try:
         decoded_token = base64.urlsafe_b64decode(token.encode())
@@ -28,32 +85,12 @@ def verify_reset_token(token, username, secret_key):
     except Exception as e:
         return False
 
-
-# Função para enviar o link de redefinição de senha
+# Função para enviar o e-mail de redefinição de senha
 def send_reset_email(email, token):
-    with open('data/data/config.json', 'r') as f:
-        config = json.load(f)
+    # Aqui você implementaria a lógica para enviar o e-mail
+    print(f"Enviando e-mail para {email} com o token {token}")
 
-    smtp_server = config['smtp_server']
-    smtp_port = config['smtp_port']
-    smtp_user = config['smtp_user']
-    smtp_password = config['smtp_password']
-
-    reset_link = f"https://example.com/reset_password?token={token}"
-    msg = f"Para redefinir sua senha, clique no link a seguir: {reset_link}"
-
-    try:
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
-        server.login(smtp_user, smtp_password)
-        server.sendmail(smtp_user, email, msg)
-        server.quit()
-        print("E-mail de redefinição de senha enviado.")
-    except Exception as e:
-        print(f"Erro ao enviar o e-mail de redefinição de senha: {e}")
-
-
-# Função para obter o e-mail do usuário (Exemplo simplificado)
+# Função para obter o e-mail do usuário
 def get_user_email(username):
     try:
         with open('data/data/users.json', 'r') as f:

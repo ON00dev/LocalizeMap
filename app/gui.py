@@ -8,10 +8,7 @@ import pandas as pd
 import logging
 import gettext
 import os
-from auth import (
-    check_credentials, register_user, reset_password, get_user_role,
-    generate_reset_token, verify_reset_token, send_reset_email, get_user_email
-)
+from auth import check_credentials, register_user, reset_password, get_user_role, generate_reset_token, verify_reset_token, send_reset_email, get_user_email
 from data_handler import save_to_json, save_to_excel, save_to_csv
 from map_api import fetch_store_data
 from map_view import generate_map
@@ -107,7 +104,7 @@ class PasswordRecoveryDialog(QDialog):
     def get_username_by_email(self, email):
         # Exemplo simplificado para obter o nome de usuário pelo e-mail
         try:
-            with open('data/data/users.json', 'r') as f:
+            with open('data/users.json', 'r') as f:
                 users = json.load(f)
             for username, details in users.items():
                 if details.get("email") == email:
@@ -156,7 +153,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle(_("Loja Finder"))
         self.setGeometry(100, 100, 600, 400)
-        self.setWindowIcon(QIcon('assets/icons/app_icon.png'))
+        self.setWindowIcon(QIcon('assets/icons/pin_mapa.png'))
 
         self.layout = QVBoxLayout()
         self.init_ui()
