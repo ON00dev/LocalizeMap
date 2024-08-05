@@ -31,7 +31,7 @@ def verify_reset_token(token, username, secret_key):
 
 # Função para enviar o link de redefinição de senha
 def send_reset_email(email, token):
-    with open('data/config.json', 'r') as f:
+    with open('data/data/config.json', 'r') as f:
         config = json.load(f)
 
     smtp_server = config['smtp_server']
@@ -56,7 +56,7 @@ def send_reset_email(email, token):
 # Função para obter o e-mail do usuário (Exemplo simplificado)
 def get_user_email(username):
     try:
-        with open('data/users.json', 'r') as f:
+        with open('data/data/users.json', 'r') as f:
             users = json.load(f)
         return users.get(username, {}).get("email", None)
     except FileNotFoundError:

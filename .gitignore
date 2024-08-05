@@ -361,9 +361,9 @@ target/
 *.lst
 
 # Certificates
-#*.pem
-#*.crt
-#*.key
+*.pem
+*.crt
+*.key
 
 # CI
 ci/
