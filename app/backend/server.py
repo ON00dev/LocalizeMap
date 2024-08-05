@@ -6,8 +6,8 @@ def run_server():
     httpd = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
 
     # Caminhos para o certificado e chave privada
-    cert_file = 'data/data/certificate.pem'
-    key_file = 'data/data/key1.pem'
+    cert_file = './LocalizeMap/app/data/data/certificate.pem'
+    key_file = './LocalizeMap/app/data/data/key1.pem'
 
     httpd.socket = ssl.wrap_socket(httpd.socket, certfile=cert_file, keyfile=key_file, server_side=True)
     print(f"Servindo em https://{server_address[0]}:{server_address[1]}")

@@ -7,7 +7,7 @@ import sys
 def setup_logging():
     # Configuração do logging com nível de log e formato detalhado
     logging.basicConfig(
-        filename='data/app.log',
+        filename='data/data/app.log',
         level=logging.DEBUG,  # Captura todos os níveis de log
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )

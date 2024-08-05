@@ -3,7 +3,7 @@ import json
 import logging
 
 def fetch_store_data(city: str, state: str, store_type: str = ""):
-    with open('data/config.json', 'r') as f:
+    with open('data/data/config.json', 'r') as f:
         config = json.load(f)
 
     logging.info(f"Buscando lojas em {city}, {state}, tipo: {store_type}")

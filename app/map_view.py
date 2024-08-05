@@ -2,7 +2,7 @@ import folium
 import json
 
 
-def generate_map(file_path='data/stores.json'):
+def generate_map(file_path='data/data/stores.json'):
     # Carregar dados das lojas
     with open(file_path, 'r') as f:
         data = json.load(f)

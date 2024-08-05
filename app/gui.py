@@ -107,7 +107,7 @@ class PasswordRecoveryDialog(QDialog):
     def get_username_by_email(self, email):
         # Exemplo simplificado para obter o nome de usuário pelo e-mail
         try:
-            with open('data/users.json', 'r') as f:
+            with open('data/data/users.json', 'r') as f:
                 users = json.load(f)
             for username, details in users.items():
                 if details.get("email") == email:
