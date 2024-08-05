@@ -1,80 +1,36 @@
+import os
+import hmac
 import hashlib
+import base64
 import json
-from notification import notify_admin_new_user
-import random
 import smtplib
-
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
+from datetime import datetime
 
 
-def check_credentials(username, password):
-    hashed_password = hash_password(password)
+# Função para gerar um token seguro
+def generate_reset_token(username):
+    secret_key = os.urandom(16)
+    timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+    message = f'{username}:{timestamp}'
+    token = hmac.new(secret_key, message.encode(), hashlib.sha256).digest()
+    token_b64 = base64.urlsafe_b64encode(token).decode()
+    return token_b64, secret_key
+
+
+# Função para verificar o token seguro
+def verify_reset_token(token, username, secret_key):
     try:
-        with open('data/users.json', 'r') as f:
-            users = json.load(f)
-            return users.get(username, {}).get("password") == hashed_password
-    except FileNotFoundError:
+        decoded_token = base64.urlsafe_b64decode(token.encode())
+        timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+        message = f'{username}:{timestamp}'
+        expected_token = hmac.new(secret_key, message.encode(), hashlib.sha256).digest()
+        return hmac.compare_digest(expected_token, decoded_token)
+    except Exception as e:
         return False
 
 
-def register_user(username, password, security_answer, role="user"):
-    hashed_password = hash_password(password)
-    hashed_answer = hash_password(security_answer)
-    try:
-        with open('data/users.json', 'r') as f:
-            users = json.load(f)
-    except FileNotFoundError:
-        users = {}
-
-    if username in users:
-        return False
-
-    users[username] = {
-        "password": hashed_password,
-        "security_answer": hashed_answer,
-        "role": role
-    }
-    with open('data/users.json', 'w') as f:
-        json.dump(users, f, indent=4)
-
-    # Notificar o administrador sobre o novo usuário
-    notify_admin_new_user(username)
-    return True
-
-
-def reset_password(username, new_password, security_answer):
-    hashed_answer = hash_password(security_answer)
-    hashed_new_password = hash_password(new_password)
-    try:
-        with open('data/users.json', 'r') as f:
-            users = json.load(f)
-        if users.get(username, {}).get("security_answer") == hashed_answer:
-            users[username]["password"] = hashed_new_password
-            with open('data/users.json', 'w') as f:
-                json.dump(users, f, indent=4)
-            return True
-        else:
-            return False
-    except FileNotFoundError:
-        return False
-
-
-def get_user_role(username):
-    try:
-        with open('data/users.json', 'r') as f:
-            users = json.load(f)
-        return users.get(username, {}).get("role", "user")
-    except FileNotFoundError:
-        return "user"
-
-# Função para gerar código de verificação 2FA
-def generate_2fa_code():
-    return random.randint(100000, 999999)
-
-
-# Função para enviar o código de verificação por e-mail
-def send_2fa_code(email, code):
+# Função para enviar o link de redefinição de senha
+def send_reset_email(email, token):
     with open('data/config.json', 'r') as f:
         config = json.load(f)
 
@@ -83,7 +39,8 @@ def send_2fa_code(email, code):
     smtp_user = config['smtp_user']
     smtp_password = config['smtp_password']
 
-    msg = f"Seu código de verificação é {code}"
+    reset_link = f"https://example.com/reset_password?token={token}"
+    msg = f"Para redefinir sua senha, clique no link a seguir: {reset_link}"
 
     try:
         server = smtplib.SMTP(smtp_server, smtp_port)
@@ -91,6 +48,16 @@ def send_2fa_code(email, code):
         server.login(smtp_user, smtp_password)
         server.sendmail(smtp_user, email, msg)
         server.quit()
-        print("Código de verificação enviado.")
+        print("E-mail de redefinição de senha enviado.")
     except Exception as e:
-        print(f"Erro ao enviar o código de verificação: {e}")
+        print(f"Erro ao enviar o e-mail de redefinição de senha: {e}")
+
+
+# Função para obter o e-mail do usuário (Exemplo simplificado)
+def get_user_email(username):
+    try:
+        with open('data/users.json', 'r') as f:
+            users = json.load(f)
+        return users.get(username, {}).get("email", None)
+    except FileNotFoundError:
+        return None

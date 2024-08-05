@@ -1,7 +1,7 @@
 import os
 import gettext
 
-# Configuração do idioma padrão
+# Configurar a tradução com base na configuração do usuário
 def set_default_language(language_code="pt_BR"):
     locales_dir = os.path.join(os.path.dirname(__file__), '../locales')
     gettext.bindtextdomain('messages', locales_dir)
