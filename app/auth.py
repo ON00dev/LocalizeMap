@@ -1,30 +1,34 @@
 import hashlib
 import json
 import os
-import hmac
-import hashlib
-import base64
-from datetime import datetime
 
-# Função para criptografar a senha
+# Função para criptografar a senha usando SHA-256
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 # Função para verificar as credenciais do usuário
 def check_credentials(username, password):
     hashed_password = hash_password(password)
+    # Construindo o caminho absoluto para o arquivo users.json
+    users_file_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'data', 'users.json')
     try:
-        with open('data/data/users.json', 'r') as f:
+        with open(users_file_path, 'r') as f:
             users = json.load(f)
-            return users.get(username, {}).get("password") == hashed_password
+            user_data = users.get(username)
+            if user_data and user_data.get("password") == hashed_password:
+                return True
     except FileNotFoundError:
-        return False
+        print(f"Arquivo users.json não encontrado no caminho especificado: {users_file_path}")
+    except json.JSONDecodeError:
+        print(f"Erro ao ler o arquivo users.json. Verifique se o JSON está formatado corretamente no caminho: {users_file_path}")
+    return False
 
 # Função para registrar um novo usuário
 def register_user(username, password, email):
     hashed_password = hash_password(password)
+    users_file_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'data', 'users.json')
     try:
-        with open('data/data/users.json', 'r') as f:
+        with open(users_file_path, 'r') as f:
             users = json.load(f)
     except FileNotFoundError:
         users = {}
@@ -34,66 +38,56 @@ def register_user(username, password, email):
 
     users[username] = {
         "password": hashed_password,
-        "email": email
+        "email": email,
+        "role": "user"
     }
-    with open('data/data/users.json', 'w') as f:
+    with open(users_file_path, 'w') as f:
         json.dump(users, f, indent=4)
     return True
 
 # Função para redefinir a senha
-def reset_password(username, new_password, _):
+def reset_password(username, new_password):
     hashed_new_password = hash_password(new_password)
+    users_file_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'data', 'users.json')
     try:
-        with open('data/data/users.json', 'r') as f:
+        with open(users_file_path, 'r') as f:
             users = json.load(f)
         if username in users:
             users[username]["password"] = hashed_new_password
-            with open('data/data/users.json', 'w') as f:
+            with open(users_file_path, 'w') as f:
                 json.dump(users, f, indent=4)
             return True
-        else:
-            return False
     except FileNotFoundError:
-        return False
+        print("Arquivo users.json não encontrado.")
+    return False
 
 # Função para obter o papel do usuário
 def get_user_role(username):
+    users_file_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'data', 'users.json')
     try:
-        with open('data/data/users.json', 'r') as f:
+        with open(users_file_path, 'r') as f:
             users = json.load(f)
         return users.get(username, {}).get("role", "user")
     except FileNotFoundError:
         return "user"
 
-# Função para gerar um token de redefinição de senha
+# Função para gerar um token de redefinição de senha (simulado)
 def generate_reset_token(username):
-    secret_key = os.urandom(16)
-    timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-    message = f'{username}:{timestamp}'
-    token = hmac.new(secret_key, message.encode(), hashlib.sha256).digest()
-    token_b64 = base64.urlsafe_b64encode(token).decode()
-    return token_b64, secret_key
+    return "simulated_token_for_" + username, b'simulated_secret_key'
 
-# Função para verificar o token de redefinição de senha
+# Função para verificar o token de redefinição de senha (simulado)
 def verify_reset_token(token, username, secret_key):
-    try:
-        decoded_token = base64.urlsafe_b64decode(token.encode())
-        timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-        message = f'{username}:{timestamp}'
-        expected_token = hmac.new(secret_key, message.encode(), hashlib.sha256).digest()
-        return hmac.compare_digest(expected_token, decoded_token)
-    except Exception as e:
-        return False
+    return token == "simulated_token_for_" + username and secret_key == b'simulated_secret_key'
 
-# Função para enviar o e-mail de redefinição de senha
+# Função para enviar o e-mail de redefinição de senha (simulado)
 def send_reset_email(email, token):
-    # Aqui você implementaria a lógica para enviar o e-mail
-    print(f"Enviando e-mail para {email} com o token {token}")
+    print(f"Simulando envio de e-mail para {email} com o token {token}")
 
 # Função para obter o e-mail do usuário
 def get_user_email(username):
+    users_file_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'data', 'users.json')
     try:
-        with open('data/data/users.json', 'r') as f:
+        with open(users_file_path, 'r') as f:
             users = json.load(f)
         return users.get(username, {}).get("email", None)
     except FileNotFoundError:

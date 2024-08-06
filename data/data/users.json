@@ -1,0 +1,12 @@
+{
+  "admin": {
+    "password": "admin99@",
+    "email": "admin",
+    "role": "admin"
+  },
+  "user1": {
+    "password": "@Victor07",
+    "email": "vicguioliveira2005@gmail.com",
+    "role": "user"
+  }
+}

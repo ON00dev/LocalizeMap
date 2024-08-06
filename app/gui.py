@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QMainWindow, QPushButton, QVBoxLayout, QWidget, QLineEdit, QLabel,
-    QComboBox, QMessageBox, QDialog, QTextEdit, QDateEdit, QCheckBox, QFileDialog
+    QComboBox, QMessageBox, QDialog, QTextEdit, QDateEdit, QApplication, QCheckBox, QFileDialog
 )
 from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt, QDate
@@ -8,6 +8,8 @@ import pandas as pd
 import logging
 import gettext
 import os
+import sys
+import json
 from auth import check_credentials, register_user, reset_password, get_user_role, generate_reset_token, verify_reset_token, send_reset_email, get_user_email
 from data_handler import save_to_json, save_to_excel, save_to_csv
 from map_api import fetch_store_data
@@ -29,43 +31,89 @@ _ = set_language('pt_BR')
 class LoginDialog(QDialog):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(_("Login"))
+        self.setWindowTitle("Login")
         self.setGeometry(100, 100, 300, 200)
         self.init_ui()
 
     def init_ui(self):
-        self.layout = QVBoxLayout()
-        self.username_label = QLabel(_("Usuário:"))
+        layout = QVBoxLayout()
+
+        self.username_label = QLabel("Usuário:")
         self.username_input = QLineEdit(self)
-        self.password_label = QLabel(_("Senha:"))
+        self.password_label = QLabel("Senha:")
         self.password_input = QLineEdit(self)
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
-        self.login_button = QPushButton(_("Login"))
+
+        self.login_button = QPushButton("Login")
         self.login_button.clicked.connect(self.login)
-        self.reset_password_button = QPushButton(_("Esqueceu a senha?"))
-        self.reset_password_button.clicked.connect(self.show_reset_password)
 
-        self.layout.addWidget(self.username_label)
-        self.layout.addWidget(self.username_input)
-        self.layout.addWidget(self.password_label)
-        self.layout.addWidget(self.password_input)
-        self.layout.addWidget(self.login_button)
-        self.layout.addWidget(self.reset_password_button)
+        self.register_button = QPushButton("Cadastrar")
 
-        self.setLayout(self.layout)
+        class RegisterDialog(QDialog):
+            def __init__(self):
+                super().__init__()
+                self.setWindowTitle("Registrar")
+                self.setGeometry(100, 100, 300, 200)
+                self.init_ui()
+
+            def init_ui(self):
+                layout = QVBoxLayout()
+
+                self.username_label = QLabel("Usuário:")
+                self.username_input = QLineEdit(self)
+                self.email_label = QLabel("E-mail:")
+                self.email_input = QLineEdit(self)
+                self.password_label = QLabel("Senha:")
+                self.password_input = QLineEdit(self)
+                self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+                self.register_button = QPushButton("Registrar")
+                self.register_button.clicked.connect(self.register_user)
+
+                layout.addWidget(self.username_label)
+                layout.addWidget(self.username_input)
+                layout.addWidget(self.email_label)
+                layout.addWidget(self.email_input)
+                layout.addWidget(self.password_label)
+                layout.addWidget(self.password_input)
+                layout.addWidget(self.register_button)
+
+                self.setLayout(layout)
+
+            def register_user(self):
+                username = self.username_input.text().strip()
+                email = self.email_input.text().strip()
+                password = self.password_input.text().strip()
+
+                if not username or not email or not password:
+                    QMessageBox.warning(self, "Erro", "Todos os campos são obrigatórios.")
+                    return
+
+                if register_user(username, password, email):
+                    QMessageBox.information(self, "Sucesso", "Usuário registrado com sucesso.")
+                    self.accept()
+                else:
+                    QMessageBox.warning(self, "Erro", "Usuário já existe ou ocorreu um erro.")
+
+        self.register_button.clicked.connect(RegisterDialog.init_ui(self))
+
+        layout.addWidget(self.username_label)
+        layout.addWidget(self.username_input)
+        layout.addWidget(self.password_label)
+        layout.addWidget(self.password_input)
+        layout.addWidget(self.login_button)
+        layout.addWidget(self.register_button)
+
+        self.setLayout(layout)
 
     def login(self):
         username = self.username_input.text().strip()
         password = self.password_input.text().strip()
         if check_credentials(username, password):
-            QMessageBox.information(self, _("Sucesso"), _("Login realizado com sucesso."))
+            QMessageBox.information(self, "Sucesso", "Login realizado com sucesso.")
             self.accept()
         else:
-            QMessageBox.warning(self, _("Erro"), _("Nome de usuário ou senha incorretos."))
+            QMessageBox.warning(self, "Erro", "Nome de usuário ou senha incorretos.")
 
-    def show_reset_password(self):
-        recovery_dialog = PasswordRecoveryDialog()
-        recovery_dialog.exec()
 
 class PasswordRecoveryDialog(QDialog):
     def __init__(self):
@@ -104,7 +152,7 @@ class PasswordRecoveryDialog(QDialog):
     def get_username_by_email(self, email):
         # Exemplo simplificado para obter o nome de usuário pelo e-mail
         try:
-            with open('data/users.json', 'r') as f:
+            with open('../data/data/users.json', 'r') as f:
                 users = json.load(f)
             for username, details in users.items():
                 if details.get("email") == email:
@@ -153,7 +201,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle(_("Loja Finder"))
         self.setGeometry(100, 100, 600, 400)
-        self.setWindowIcon(QIcon('assets/icons/pin_mapa.png'))
+        self.setWindowIcon(QIcon('./assets/icons/pin_mapa.png'))
 
         self.layout = QVBoxLayout()
         self.init_ui()
@@ -162,29 +210,20 @@ class MainWindow(QMainWindow):
         container.setLayout(self.layout)
         self.setCentralWidget(container)
 
-        self.show_login()
-        self.start_auto_update()
-
     def init_ui(self):
-        # Outros elementos da GUI...
-
-        self.recover_password_button = QPushButton(_("Recuperar Senha"))
-        self.recover_password_button.clicked.connect(self.show_password_recovery_dialog)
-        self.layout.addWidget(self.recover_password_button)
-
-    def show_password_recovery_dialog(self):
-        recovery_dialog = PasswordRecoveryDialog()
-        recovery_dialog.exec()
-
-    def show_login(self):
-        login_dialog = LoginDialog()
-        if login_dialog.exec() != QDialog.DialogCode.Accepted:
-            self.close()
-        else:
-            self.username = login_dialog.username_input.text().strip()
-            self.role = get_user_role(self.username)
-            self.init_ui()  # Re-renderizar a interface para considerar permissões
-
-    def start_auto_update(self):
-        # Configuração do agendamento automático...
+        # Aqui você inicializa a interface principal do aplicativo, por exemplo, mostrar lojas, buscar etc.
         pass
+
+def main():
+    app = QApplication(sys.argv)
+    login_dialog = LoginDialog()
+    if login_dialog.exec() == QDialog.DialogCode.Accepted:
+        main_window = MainWindow()
+        main_window.show()
+        sys.exit(app.exec())
+    else:
+        sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
